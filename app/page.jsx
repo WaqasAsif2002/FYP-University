@@ -82,11 +82,11 @@ export default function Home() {
             </div>
             <div className="flex justify-center mt-8 lg:mt-0">
               <img
-                src="/images/first.png"
+                src="https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png"
                 alt="Modern parking facility"
                 className="rounded-lg shadow-2xl w-full max-w-md lg:max-w-full h-auto object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = "/images/front.jpg"
+                  e.currentTarget.src = "https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png"
                 }}
               />
             </div>
@@ -130,11 +130,11 @@ export default function Home() {
             </div>
             <div className="flex justify-center mt-8 lg:mt-0">
               <img
-                src="/images/front.png"
+                src="https://img.freepik.com/premium-photo/aerial-view-large-open-air-parking-lot-cars-residents-area_97694-15429.jpg"
                 alt="ParkEase app"
                 className="rounded-lg shadow-xl w-full max-w-md lg:max-w-full h-auto object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = "/images/firstone.PNG"
+                  e.currentTarget.src = "https://img.freepik.com/premium-photo/aerial-view-large-open-air-parking-lot-cars-residents-area_97694-15429.jpg"
                 }}
               />
             </div>
