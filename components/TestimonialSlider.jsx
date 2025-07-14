@@ -11,7 +11,7 @@ const testimonials = [
     content:
       "ParkEase saved me so much time! No more searching for parking spots. The booking process is incredibly smooth and reliable.",
     rating: 5,
-    image: "/public/99bd115d730e68729ed7f5afdb9410ed.jpg.jpg",
+    image: "https://as1.ftcdn.net/jpg/05/63/19/78/1000_F_563197887_YxqorDKR7dbyad0NPBwJ8f085fiq4jeL.jpg",
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const testimonials = [
     content:
       "The booking process is so simple and quick. Highly recommended! It's made my visits to the mall so much more convenient.",
     rating: 5,
-    image: "/public/istockphoto-2157036490-170667a.jpg",
+    image: "https://www.pngitem.com/pimgs/m/4-42408_vector-art-design-men-fashion-vector-art-illustration.png",
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const testimonials = [
     content:
       "ParkEase has revolutionized my mall experience. Quick booking, secure payment, and guaranteed parking spot. Perfect!",
     rating: 5,
-    image: "/public/profile-view-of-a-bearded-man-wearing-a-green-cap-illustration-minimalist-illustration-vector.jpg",
+    image: "https://static.vecteezy.com/system/resources/previews/009/383/463/non_2x/man-face-clipart-design-illustration-free-png.png",
   },
 ]
 
