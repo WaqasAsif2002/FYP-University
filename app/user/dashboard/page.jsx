@@ -89,36 +89,9 @@ export default function UserDashboard() {
     user,
   ]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-
-      bookingData.forEach(async (booking) => {
-        const endTime = new Date(booking.bookingEndTime);
-
-        if (booking.status === true && endTime <= now) {
-          const { error } = await supabase
-            .from("bookings")
-            .update({ status: false })
-            .eq("id", booking.id);
-
-          if (!error) {
-            // Frontend state bhi update karo
-            setBookingData((prev) =>
-              prev.map((item) =>
-                item.id === booking.id ? { ...item, status: false } : item
-              )
-            );
-          } else {
-            console.error("Update error:", error.message);
-          }
-        }
-      });
-    }, 1000); // Check every second
-
-    return () => clearInterval(interval);
-  }, [bookingData]);
-
+  const userBookings = user
+    ? bookings.filter((booking) => booking.userId === user.userId)
+    : [];
   // FAQ data
   const faqData = [
     {
@@ -178,18 +151,20 @@ export default function UserDashboard() {
     ).length;
   };
 
-  const getSlotAvailabilityTime = (slotId) => {
+  const getSlotAvailabilityTime = (slot) => {
     const slotBookings = bookings.filter(
       (booking) =>
-        booking.slot === slotId &&
-        booking.status === "Confirmed" &&
-        new Date(booking.endDateTime) > new Date()
+        booking.slotId === slot &&
+        !booking.status &&
+        new Date(booking.bookingEndTime) > new Date()
     );
 
     if (slotBookings.length === 0) return null;
 
     const latestEndTime = Math.max(
-      ...slotBookings.map((booking) => new Date(booking.endDateTime).getTime())
+      ...slotBookings.map((booking) =>
+        new Date(booking.bookingEndTime).getTime()
+      )
     );
 
     const now = new Date().getTime();
@@ -317,7 +292,7 @@ export default function UserDashboard() {
         carNum: newBooking.carNumber,
         whatsapp: newBooking.whatsapp,
         paymentMethod: newBooking.paymentMethod,
-        status: true,
+        status: false,
         bookingEndTime: newBooking.endDateTime,
       });
     } catch (error) {
@@ -368,7 +343,11 @@ export default function UserDashboard() {
 
   const downloadReceipt = () => {
     if (!currentBooking) return;
-    generateBookingPDF(currentBooking);
+    const updatedUserBooking = {
+      ...currentBooking,
+      fullName: user?.fullName,
+    };
+    generateBookingPDF(updatedUserBooking, bookings.length);
     showSuccess("Receipt downloaded successfully!");
   };
 
@@ -399,7 +378,7 @@ export default function UserDashboard() {
         carNum: newBooking.carNumber,
         whatsapp: newBooking.whatsapp,
         paymentMethod: newBooking.paymentMethod,
-        status: true,
+        status: false,
         bookingEndTime: newBooking.endDateTime,
       });
     } catch (error) {
@@ -416,12 +395,6 @@ export default function UserDashboard() {
     } catch (error) {
       console.log(error);
     }
-
-    setAvailableSlots((prev) =>
-      prev.map((slot) =>
-        slot.id === bookingForm.slot ? { ...slot, available: false } : slot
-      )
-    );
 
     setCurrentBooking(newBooking);
     setShowEasyPaisaPayment(false);
@@ -644,7 +617,7 @@ export default function UserDashboard() {
               </button>
             </div>
 
-            {bookings.length === 0 ? (
+            {userBookings.length === 0 ? (
               <div className="bg-white dark:bg-gray-800 p-8 md:p-12 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 text-center">
                 <Car className="w-12 h-12 md:w-16 md:h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300">
@@ -662,7 +635,7 @@ export default function UserDashboard() {
               </div>
             ) : (
               <div className="space-y-4">
-                {bookings.map((booking) => (
+                {userBookings.map((booking) => (
                   <div
                     key={booking.id}
                     className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
@@ -703,7 +676,11 @@ export default function UserDashboard() {
                               : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
                           }`}
                         >
-                          {booking.status ? "Confirmed" : "Pending"}
+                          {booking.status
+                            ? "Completed"
+                            : !booking.status
+                            ? "Active"
+                            : "Inactive"}
                         </span>
                         <p className="text-lg md:text-xl font-bold text-black dark:text-white mt-2">
                           Rs. {booking.totalPrice}
@@ -974,7 +951,6 @@ export default function UserDashboard() {
                   >
                     <option value="">Choose a slot</option>
                     {availableSlots.map((slot) => {
-                      console.log(slot);
                       const minutesUntilFree = getSlotAvailabilityTime(slot.id);
                       return (
                         <option
@@ -990,15 +966,15 @@ export default function UserDashboard() {
                       );
                     })}
                   </select>
-                  {/* {bookingForm.slot &&
-                    !availableSlots.find((s) => s.id === bookingForm.slot)
+                  {bookingForm.slot &&
+                    availableSlots.find((s) => s.id === bookingForm.slotId)
                       ?.status && (
                       <small className="text-orange-600 dark:text-orange-400">
                         This slot will be free in{" "}
                         {getSlotAvailabilityTime(bookingForm.slot) || "Unknown"}{" "}
                         minutes
                       </small>
-                    )} */}
+                    )}
                 </div>
 
                 <DateTimeRangePicker

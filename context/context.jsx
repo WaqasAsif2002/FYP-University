@@ -61,30 +61,21 @@ export const UserProvider = ({ children }) => {
 
       // Fetch booking data
       try {
-        if (userData.role === "admin") {
-          const { data: bookings } = await supabase
-            .from("bookings")
-            .select()
-            .order("id", { ascending: true });
-          setBookingData(bookings || []);
+        const { data: bookings } = await supabase
+          .from("bookings")
+          .select()
+          .order("id", { ascending: true });
+        setBookingData(bookings);
 
-          const { data: users } = await supabase.from("users").select("*");
-          const formatted = users.map((item) => ({
-            ...item,
-            created_at: new Intl.DateTimeFormat("en-US", {
-              dateStyle: "medium",
-              timeStyle: "short",
-            }).format(new Date(item.created_at)),
-          }));
-          setAllUsers(formatted);
-        } else {
-          const { data: bookings } = await supabase
-            .from("bookings")
-            .select()
-            .eq("userId", userData.userId)
-            .order("id", { ascending: true });
-          setBookingData(bookings || []);
-        }
+        const { data: users } = await supabase.from("users").select("*");
+        const formatted = users.map((item) => ({
+          ...item,
+          created_at: new Intl.DateTimeFormat("en-US", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(new Date(item.created_at)),
+        }));
+        setAllUsers(formatted);
       } catch (err) {
         console.error("Fetch error:", err.message);
       }
@@ -137,7 +128,7 @@ export const UserProvider = ({ children }) => {
       bookingData.forEach(async (booking) => {
         const endTime = new Date(booking.bookingEndTime);
 
-        if (booking.status === false && endTime <= now) {
+        if (!booking.status && endTime <= now) {
           const { error } = await supabase
             .from("parkingSlot")
             .update({ status: true })
@@ -146,7 +137,7 @@ export const UserProvider = ({ children }) => {
           if (!error) {
             const { error: bookingError } = await supabase
               .from("bookings")
-              .update({ status: false })
+              .update({ status: true })
               .eq("id", booking.id);
             if (bookingError) {
               console.error("Update error:", bookingError.message);

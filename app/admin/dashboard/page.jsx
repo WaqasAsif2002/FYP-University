@@ -296,11 +296,10 @@ export default function AdminDashboard() {
     e.preventDefault();
 
     if (!editingBooking) return;
-
     // Calculate hours from datetime range
-    const startTime = new Date(editingBooking.startDateTime).getTime();
-    const endTime = new Date(editingBooking.endDateTime).getTime();
-    const diffHours = Math.ceil((startTime - endTime) / (1000 * 60 * 60));
+    const startTime = new Date(editingBooking.created_at).getTime();
+    const endTime = new Date(editingBooking.bookingEndTime).getTime();
+    const diffHours = Math.ceil((endTime - startTime) / (1000 * 60 * 60));
     // Validate hours (1-10)
     if (diffHours < 1 || diffHours > 10) {
       showError("Booking duration must be between 1 and 10 hours");
@@ -317,23 +316,22 @@ export default function AdminDashboard() {
       );
       return;
     }
-
     try {
       const { error } = await supabase
         .from("bookings")
         .update({
           slotId: editingBooking.slotId,
-          duration: editingBooking.duration,
-          totalPrice: editingBooking.totalPrice,
+          duration: diffHours,
+          totalPrice: diffHours * 100, // Assuming Rs. 100 per hour
           carNum: editingBooking.carNum,
           status:
             editingBooking.status === "Completed"
-              ? false
-              : editingBooking.status === "Active"
               ? true
+              : editingBooking.status === "Active"
+              ? false
               : editingBooking.status === ""
               ? "Pending"
-              : false,
+              : true,
           bookingEndTime: editingBooking.bookingEndTime,
           created_at: editingBooking.created_at,
         })
@@ -341,10 +339,31 @@ export default function AdminDashboard() {
       if (error) {
         console.error("Error updating booking:", error);
       }
-      const { data, error: helloerror } = await supabase
-        .from("bookings")
-        .select("*")
-        .eq("id", editingBooking.id);
+      if (editingBooking.status === "Active") {
+        const { error: slotError } = await supabase
+          .from("parkingSlot")
+          .update({ status: false })
+          .eq("id", editingBooking.slotId);
+        if (slotError) {
+          console.error("Error updating Parking Slot:", error);
+        }
+      } else if (editingBooking.status === "Completed") {
+        const { error: slotError } = await supabase
+          .from("parkingSlot")
+          .update({ status: true })
+          .eq("id", editingBooking.slotId);
+        if (slotError) {
+          console.error("Error updating Parking Slot:", error);
+        }
+      } else {
+        const { error: slotError } = await supabase
+          .from("parkingSlot")
+          .update({ status: true })
+          .eq("id", editingBooking.slotId);
+        if (slotError) {
+          console.error("Error updating Parking Slot:", error);
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -406,7 +425,7 @@ export default function AdminDashboard() {
         carNum: booking.carNumber,
         whatsapp: selectedUser.whatsapp,
         paymentMethod: booking.paymentMethod,
-        status: true,
+        status: false,
         bookingEndTime: booking.endDateTime,
       });
     } catch (error) {
@@ -494,7 +513,7 @@ export default function AdminDashboard() {
         carNum: booking.carNumber,
         whatsapp: selectedUser.whatsapp,
         paymentMethod: booking.paymentMethod,
-        status: true,
+        status: false,
         bookingEndTime: booking.endDateTime,
       });
     } catch (error) {
@@ -799,7 +818,7 @@ export default function AdminDashboard() {
                                 : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300"
                             }`}
                           >
-                            {booking.status ? "Active" : "Inactive"}
+                            {!booking.status ? "Active" : "Inactive"}
                           </span>
                           <p className="text-sm font-semibold text-black dark:text-white">
                             Rs. {booking.totalPrice}
@@ -839,18 +858,20 @@ export default function AdminDashboard() {
     }
   };
 
-  const getSlotAvailabilityTime = (slotId) => {
+  const getSlotAvailabilityTime = (slot) => {
     const slotBookings = bookings.filter(
       (booking) =>
-        booking.slot === slotId &&
-        booking.status === "Active" &&
-        new Date(booking.endDateTime) > new Date()
+        booking.slotId === slot &&
+        !booking.status &&
+        new Date(booking.bookingEndTime) > new Date()
     );
 
     if (slotBookings.length === 0) return null;
 
     const latestEndTime = Math.max(
-      ...slotBookings.map((booking) => new Date(booking.endDateTime).getTime())
+      ...slotBookings.map((booking) =>
+        new Date(booking.bookingEndTime).getTime()
+      )
     );
 
     const now = new Date().getTime();
@@ -1165,7 +1186,7 @@ export default function AdminDashboard() {
                     })}
                   </select>
                   {newBooking.slot &&
-                    !slots.find((s) => s.id === newBooking.slot)?.status && (
+                    slots.find((s) => s.id === newBooking.slot)?.status && (
                       <small className="text-orange-600 dark:text-orange-400">
                         This slot will be free in{" "}
                         {getSlotAvailabilityTime(newBooking.slot) || "Unknown"}{" "}

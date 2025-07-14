@@ -3,6 +3,11 @@ import { supabase } from "@/lib/createClient";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import SweetAlertProvider, {
+  showSuccess,
+  showError,
+  showWarning,
+} from "@/components/SweetAlert";
 
 export default function Signup() {
   const router = useRouter();
@@ -123,15 +128,9 @@ export default function Signup() {
     }
 
     setTimeout(async () => {
-      console.log("User registered:", formData);
       const userData = {
         ...formData,
       };
-      console.log("User data to be inserted:", userData.email);
-      console.log("User data to be inserted:", userData.carNumber);
-      console.log("User data to be inserted:", userData.whatsapp);
-      console.log("User data to be inserted:", userData.name);
-      console.log("User data to be inserted:", userData.password);
 
       try {
         const { data, error } = await supabase.auth.signUp({
@@ -140,7 +139,6 @@ export default function Signup() {
         });
         if (error) throw error;
         if (data) {
-          console.log(data);
           insertData(data, userData);
         }
       } catch (error) {
@@ -148,12 +146,20 @@ export default function Signup() {
       } finally {
         setIsLoading(false);
       }
-      router.push("/user/dashboard");
+      showSuccess(
+        "Account created successfully! Please check your email to verify your account."
+      );
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        whatsapp: "",
+        carNumber: "",
+      });
     }, 1500);
   };
 
   async function insertData(data, userData) {
-    console.log("Inserting user data:", data);
     const lowerEmail = data.user.email.toLowerCase();
     const isAdmin =
       lowerEmail.includes("admin") || lowerEmail.includes("manager");
@@ -176,6 +182,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <SweetAlertProvider />
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
