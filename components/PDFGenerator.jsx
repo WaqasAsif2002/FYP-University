@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-export const generateBookingPDF = (booking) => {
+export const generateBookingPDF = (booking, bookingNum) => {
   // Create PDF content as HTML
   const pdfContent = `
     <!DOCTYPE html>
@@ -95,54 +95,84 @@ export const generateBookingPDF = (booking) => {
         <div class="booking-info">
           <div class="info-row">
             <span class="label">Booking ID:</span>
-            <span class="value">${booking.id}</span>
+            <span class="value">${
+              booking.id ? booking.id : bookingNum + 1
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Parking Slot:</span>
-            <span class="value">${booking.slot}</span>
+            <span class="value">${
+              booking.slotId ? booking.slotId : booking.slot
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Customer Name:</span>
-            <span class="value">${booking.userName || "N/A"}</span>
+            <span class="value">${
+              booking.userName ? booking.userName : booking.fullName
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Car Number:</span>
-            <span class="value">${booking.carNumber}</span>
+            <span class="value">${
+              booking.carNum ? booking.carNum : booking.carNumber
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Start Time:</span>
-            <span class="value">${new Date(booking.startDateTime).toLocaleString()}</span>
+            <span class="value">${new Date(
+              booking.created_at ? booking.created_at : booking.startDateTime
+            ).toLocaleString()}</span>
           </div>
           <div class="info-row">
             <span class="label">End Time:</span>
-            <span class="value">${new Date(booking.endDateTime).toLocaleString()}</span>
+            <span class="value">${new Date(
+              booking.bookingEndTime
+                ? booking.bookingEndTime
+                : booking.endDateTime
+            ).toLocaleString()}</span>
           </div>
           <div class="info-row">
             <span class="label">Duration:</span>
-            <span class="value">${booking.hours} hour(s)</span>
+            <span class="value">${
+              booking.duration ? booking.duration : booking.hours
+            } hour(s)</span>
           </div>
           <div class="info-row">
             <span class="label">Payment Method:</span>
-            <span class="value">${booking.paymentMethod === "easypaisa" ? "EasyPaisa" : "Cash"}</span>
+            <span class="value">${
+              booking.paymentMethod === "easypaisa" ? "EasyPaisa" : "Cash"
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Status:</span>
-            <span class="value">${booking.status}</span>
+            <span class="value">${
+              booking.status
+                ? "Completed"
+                : !booking.status
+                ? "Active"
+                : "Inactive"
+            }</span>
           </div>
           <div class="info-row">
             <span class="label">Booking Date:</span>
-            <span class="value">${new Date(booking.bookingDate).toLocaleString()}</span>
+            <span class="value">${new Date(
+              booking.created_at ? booking.created_at : booking.startDateTime
+            ).toLocaleString()}</span>
           </div>
         </div>
 
         <div class="amount-section">
           <div style="font-size: 16px; margin-bottom: 10px;">Total Amount</div>
-          <div class="amount">Rs. ${booking.totalAmount}</div>
+          <div class="amount">Rs. ${
+            booking.totalPrice ? booking.totalPrice : booking.totalAmount
+          }</div>
         </div>
 
         <div class="qr-section">
           <h4>QR Code</h4>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Booking-${booking.id}" alt="QR Code" style="border: 1px solid #ddd; border-radius: 5px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Booking-${
+            booking.id ? booking.id : bookingNum + 1
+          }" alt="QR Code" style="border: 1px solid #ddd; border-radius: 5px;">
           <p style="font-size: 12px; color: #666; margin-top: 10px;">
             Show this QR code at the parking entrance
           </p>
@@ -157,16 +187,16 @@ export const generateBookingPDF = (booking) => {
       </div>
     </body>
     </html>
-  `
+  `;
 
   // Create a new window and print
-  const printWindow = window.open("", "_blank")
-  printWindow.document.write(pdfContent)
-  printWindow.document.close()
+  const printWindow = window.open("", "_blank");
+  printWindow.document.write(pdfContent);
+  printWindow.document.close();
 
   // Wait for content to load then print
   setTimeout(() => {
-    printWindow.print()
-    printWindow.close()
-  }, 500)
-}
+    printWindow.print();
+    printWindow.close();
+  }, 500);
+};

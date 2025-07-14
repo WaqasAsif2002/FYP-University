@@ -45,10 +45,6 @@ export default function Login() {
     setError("");
   };
 
-  useEffect(() => {
-    console.log("Form data updated:", formData);
-  }, [formData]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -165,6 +161,14 @@ export default function Login() {
                 placeholder="Enter your password"
                 required
               />
+              <div className="mt-2 text-right">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
             </div>
 
             {error && (
