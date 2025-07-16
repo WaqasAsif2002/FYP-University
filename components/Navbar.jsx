@@ -80,7 +80,8 @@ export default function Navbar() {
             </button>
             <Link
               href="/login"
-              className="rounded-full bg-gray-500 text-black px-4 py-2 hover:bg-gray-200 transition-colors text-sm xl:text-base"
+              className="rounded-full bg-black-500 text-white border border-white px-4 py-2 hover:bg-gray-100 hover:text-black transition-colors text-sm xl:text-base"
+
             >
               Login
             </Link>
