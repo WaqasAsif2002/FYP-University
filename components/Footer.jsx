@@ -1,16 +1,15 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Github, Linkedin, Mail, Phone, MapPin } from "lucide-react"
+import { Github, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   const handleGithubClick = () => {
-    window.open("https://github.com/waqasasif2002", "_blank")
-  }
+    window.open("https://github.com/waqasasif2002", "_blank");
+  };
 
   const handleLinkedinClick = () => {
-    window.open("https://www.linkedin.com/in/mohammad-waqas-7a98aa1ab/", "_blank")
-  }
+    window.open("https://www.linkedin.com/in/mohammad-waqas-7a98aa1ab/", "_blank");
+  };
 
   return (
     <footer className="bg-gray-900 text-white py-16">
@@ -40,24 +39,24 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
+                <a href="#home" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
                   Home
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/about" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
+                <a href="#about" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
                   About
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/features" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
+                <a href="#features" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
                   Features
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
+                <a href="#contact" className="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">
                   Contact
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -108,5 +107,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
