@@ -1,22 +1,49 @@
-"use client"
-import { useRouter } from "next/navigation"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import TestimonialSlider from "@/components/TestimonialSlider"
-import ParkEaseChatbot from "@/components/ParkEaseChatbot"
-import SweetAlertProvider from "@/components/SweetAlert"
-import { Car, Shield, Smartphone, Phone, Mail, MapPinIcon } from "lucide-react"
+"use client";
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import TestimonialSlider from "@/components/TestimonialSlider";
+import ParkEaseChatbot from "@/components/ParkEaseChatbot";
+import SweetAlertProvider from "@/components/SweetAlert";
+// import emailjs from "emailjs-com";
+import { useRef } from "react";
+import { Car, Shield, Smartphone, Phone, Mail, MapPinIcon } from "lucide-react";
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
+  const form = useRef();
 
   const handleBookNow = () => {
-    router.push("/login")
-  }
+    router.push("/login");
+  };
 
   const handleWhatsAppSupport = () => {
-    window.open("https://wa.me/923343282332", "_blank")
-  }
+    window.open("https://wa.me/923343282332", "_blank");
+  };
+
+ const handleEmailSupport = () => {
+  window.open("mailto:waqas.khokhar2002@gmail.com", "_blank");
+};
+
+
+//  const sendEmail = (e) => {
+//   e.preventDefault();
+//   emailjs
+//     .sendForm(
+//       "service_nlaoayh",         // ✅ Service ID
+//       "template_l6fbbi6",        // ✅ Template ID
+//       form.current,
+//       "giW9Anq6NY_uCHNrO"        // ✅ Public Key
+//     )
+//     .then(() => {
+//       alert("Message sent successfully!");
+//       form.current.reset();
+//     })
+//     .catch(() => {
+//       alert("Failed to send message. Please try again.");
+//     });
+// };
+
 
   const features = [
     {
@@ -34,7 +61,7 @@ export default function Home() {
       title: "Mobile Friendly",
       description: "Access our platform from any device, anywhere, anytime.",
     },
-  ]
+  ];
 
   const steps = [
     {
@@ -55,7 +82,7 @@ export default function Home() {
       description: "Arrive at your reserved spot and enjoy hassle-free parking.",
       image: "/images/third1.jpg",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-200">
@@ -67,27 +94,24 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="text-center lg:text-left">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
+              <h1 className="text-5xl font-bold text-white mb-4 leading-tight">
                 Secure Your Pre-Parking Spot Instantly!
               </h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8 leading-relaxed">
+              <p className="text-xl text-gray-300 mb-6">
                 Book parking spaces at Millennium Mall Karachi in advance. No more circling around looking for parking.
               </p>
               <button
                 onClick={handleBookNow}
-                className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg text-base md:text-lg font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
               >
                 Book Now
               </button>
             </div>
-            <div className="flex justify-center mt-8 lg:mt-0">
+            <div className="flex justify-center">
               <img
                 src="https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png"
-                alt="Modern parking facility"
-                className="rounded-lg shadow-2xl w-full max-w-md lg:max-w-full h-auto object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = "https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png"
-                }}
+                alt="Modern parking"
+                className="rounded-lg shadow-2xl max-w-md w-full"
               />
             </div>
           </div>
@@ -95,18 +119,18 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-12 md:py-20 bg-gray-800">
+      <section id="features" className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16">Features</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <h2 className="text-4xl font-bold text-center text-white mb-16">Features</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="text-center p-6 md:p-8 rounded-xl bg-gray-700 hover:bg-gray-600 transition-colors duration-300 shadow-lg hover:shadow-xl"
+                className="text-center p-8 rounded-xl bg-gray-700 hover:bg-gray-600 transition shadow-lg"
               >
-                <div className="flex justify-center mb-4 md:mb-6">{feature.icon}</div>
-                <h3 className="text-xl md:text-2xl font-semibold text-white mb-3 md:mb-4">{feature.title}</h3>
-                <p className="text-gray-300 leading-relaxed text-sm md:text-base">{feature.description}</p>
+                <div className="flex justify-center mb-6">{feature.icon}</div>
+                <h3 className="text-2xl font-semibold text-white mb-4">{feature.title}</h3>
+                <p className="text-gray-300">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -134,7 +158,7 @@ export default function Home() {
                 alt="ParkEase app"
                 className="rounded-lg shadow-xl w-full max-w-md lg:max-w-full h-auto object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = "https://img.freepik.com/premium-photo/aerial-view-large-open-air-parking-lot-cars-residents-area_97694-15429.jpg"
+                  e.currentTarget.src = "https://img.freepik.com/premium-photo/aerial-view-large-open-air-parking-lot-cars-residents-area_97694-15429.jpg";
                 }}
               />
             </div>
@@ -142,125 +166,146 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-12 md:py-20 bg-gray-800">
+      {/* How it Works Section */}
+      <section id="how-it-works" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16">How It Works</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <h2 className="text-4xl font-bold text-center text-white mb-16">How It Works</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {steps.map((step, index) => (
               <div key={index} className="text-center">
-                <div className="mb-4 md:mb-6">
-                  <img
-                    src={step.image || "/placeholder.svg"}
-                    alt={`Step ${step.number}`}
-                    className="w-full h-32 md:h-48 object-cover rounded-lg shadow-lg"
-                    onError={(e) => {
-                      e.currentTarget.src = "/placeholder.svg?height=200&width=300"
-                    }}
-                  />
-                </div>
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-lg md:text-2xl font-bold mx-auto mb-3 md:mb-4">
+                <img
+                  src={step.image}
+                  alt={`Step ${step.number}`}
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                   {step.number}
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-white mb-3 md:mb-4">{step.title}</h3>
-                <p className="text-gray-300 leading-relaxed text-sm md:text-base">{step.description}</p>
+                <h3 className="text-2xl font-semibold text-white mb-2">{step.title}</h3>
+                <p className="text-gray-300">{step.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 md:py-20 bg-gray-900">
+      {/* Testimonials */}
+      <section id="testimonials" className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16">What Our Users Say</h2>
+          <h2 className="text-4xl font-bold text-center text-white mb-16">What Our Users Say</h2>
           <TestimonialSlider />
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-12 md:py-20 bg-gray-800">
+      <section id="contact" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 md:mb-16">Contact Us</h2>
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-white mb-16">Contact Us</h2>
+          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-white mb-6 md:mb-8">Get in Touch</h3>
-              <div className="space-y-4 md:space-y-6">
+              <h3 className="text-2xl font-semibold text-white mb-6">Get in Touch</h3>
+              <div className="space-y-6">
                 <div className="flex items-center space-x-4">
-                  <Mail className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+                  <Mail className="w-6 h-6 text-blue-400" />
                   <div>
-                    <p className="font-semibold text-white text-sm md:text-base">Email</p>
-                    <p className="text-gray-300 text-sm md:text-base">waqas.khokhar2002@gmail.com</p>
+                    <p className="text-white font-semibold">Email</p>
+                    <p className="text-gray-300">waqas.khokhar2002@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <Phone className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
+                  <Phone className="w-6 h-6 text-green-400" />
                   <div>
-                    <p className="font-semibold text-white text-sm md:text-base">Phone</p>
-                    <p className="text-gray-300 text-sm md:text-base">03343282332</p>
+                    <p className="text-white font-semibold">Phone</p>
+                    <p className="text-gray-300">03343282332</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <MapPinIcon className="w-5 h-5 md:w-6 md:h-6 text-red-400" />
+                  <MapPinIcon className="w-6 h-6 text-red-400" />
                   <div>
-                    <p className="font-semibold text-white text-sm md:text-base">Address</p>
-                    <p className="text-gray-300 text-sm md:text-base">Millennium Mall, Karachi, Pakistan</p>
+                    <p className="text-white font-semibold">Address</p>
+                    <p className="text-gray-300">Millennium Mall, Karachi</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-6 md:mt-8">
                 <button
                   onClick={handleWhatsAppSupport}
-                  className="bg-green-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-green-600 transition-colors duration-300 flex items-center space-x-2 font-semibold text-sm md:text-base"
+                  className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center space-x-2"
                 >
-                  <Phone className="w-4 h-4 md:w-5 md:h-5" />
+                  <Phone className="w-5 h-5" />
                   <span>WhatsApp Support</span>
                 </button>
+
+                <button
+  onClick={handleEmailSupport}
+  className="flex items-center gap-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300"
+>
+  <Mail className="w-5 h-5" />
+  <span>Email Support</span>
+</button>
+
               </div>
             </div>
 
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-white mb-6 md:mb-8">Send us a Message</h3>
-              <form className="space-y-4 md:space-y-6">
-                <div>
-                  <label className="block text-white font-medium mb-2 text-sm md:text-base">Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white text-sm md:text-base"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2 text-sm md:text-base">Email</label>
-                  <input
-                    type="email"
-                    className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white text-sm md:text-base"
-                    placeholder="Your email"
-                  />
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2 text-sm md:text-base">Message</label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white text-sm md:text-base"
-                    placeholder="Your message"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-2 md:py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 font-semibold text-sm md:text-base"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
+          {/* <div>
+  <h3 className="text-2xl font-semibold text-white mb-6">Send us a Message</h3>
+  <form ref={form} onSubmit={sendEmail} className="space-y-6">
+    <input
+      type="text"
+      name="from_name"
+      required
+      placeholder="Your Name"
+      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+    />
+    <input
+      type="email"
+      name="reply_to"
+      required
+      placeholder="Your Email"
+      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+    />
+    <textarea
+      name="message"
+      required
+      rows="5"
+      placeholder="Your Message"
+      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white"
+    />
+    <button
+      type="submit"
+      className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 font-semibold"
+    >
+      Send Message
+    </button>
+  </form>
+</div> */}
+{/* <section id="location" className="py-20 bg-gray-800"> */}
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-white mb-8">Our Location</h2>
+          <div className="rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              title="Millennium Mall Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.929196602472!2d67.08733731500117!3d24.861578284048816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e72569c88d1%3A0x90a5f5c0f7f4dc4a!2sMillennium%20Mall!5e0!3m2!1sen!2s!4v1627020609920!5m2!1sen!2s"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              className="w-full h-96 border-0"
+            ></iframe>
+          </div>
+        </div>
+      {/* </section> */}
+
+
+
           </div>
         </div>
       </section>
 
+      {/* Map Section */}
+      
+
       <Footer />
       <ParkEaseChatbot />
     </div>
-  )
+  );
 }
