@@ -102,7 +102,7 @@ export default function Home() {
               </p>
               <button
                 onClick={handleBookNow}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
+                    className="bg-transparent text-white border border-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 !hover:bg-gray-600 transition"
               >
                 Book Now
               </button>
