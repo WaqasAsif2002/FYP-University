@@ -1,5 +1,5 @@
 {
-  "name": "my-v0-project",
+  "name": "my-fyp-project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -43,6 +43,7 @@
     "clsx": "^2.1.1",
     "cmdk": "latest",
     "date-fns": "4.1.0",
+    "emailjs-com": "^3.2.0",
     "embla-carousel-react": "latest",
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
@@ -53,6 +54,7 @@
     "react-dom": "^18",
     "react-hook-form": "latest",
     "react-hot-toast": "latest",
+    "react-icons": "^5.5.0",
     "react-resizable-panels": "latest",
     "recharts": "latest",
     "sonner": "latest",
