@@ -3,6 +3,7 @@ import { supabase } from "@/lib/createClient";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FiArrowLeft } from "react-icons/fi";
 import SweetAlertProvider, {
   showSuccess,
   showError,
@@ -186,7 +187,26 @@ export default function Signup() {
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
+
+
+
+
+
+
+            
             <h1 className="text-3xl font-bold text-black dark:text-white">
+
+<div className="mt-6 text-left">
+  <Link
+    href="/login"
+    className="text-sm text-black dark:text-white hover:underline flex items-center gap-1"
+  >
+    <FiArrowLeft /> Back
+  </Link>
+</div>
+
+
+
               Create Account
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">
