@@ -2,35 +2,27 @@
 
 import { useState, useEffect } from "react"
 import { Calendar, Clock, Calculator } from "lucide-react"
-import moment from "moment-timezone"
 
 export default function DateTimeRangePicker({
+  startDateTime,
   endDateTime,
   onStartChange,
   onEndChange,
   minDate,
   className = "",
 }) {
-  const [startDateTime, setStartDateTime] = useState("")
   const [calculatedHours, setCalculatedHours] = useState(0)
   const [calculatedFee, setCalculatedFee] = useState(0)
 
   const PRICE_PER_HOUR = 100
 
-  // Set initial start time to current time in Pakistan timezone
-  useEffect(() => {
-    const nowInPakistan = moment().tz("Asia/Karachi").format("YYYY-MM-DDTHH:mm")
-    setStartDateTime(nowInPakistan)
-    onStartChange(nowInPakistan)
-  }, [])
-
-  // Calculate hours and fee
+  // Calculate hours and fee whenever start or end time changes
   useEffect(() => {
     if (startDateTime && endDateTime) {
       const start = new Date(startDateTime).getTime()
       const end = new Date(endDateTime).getTime()
 
-      if (end > start) {
+      if (start && end && end > start) {
         const diffMs = end - start
         const diffHours = diffMs / (1000 * 60 * 60)
         const roundedHours = Math.ceil(diffHours)
@@ -43,6 +35,25 @@ export default function DateTimeRangePicker({
       }
     }
   }, [startDateTime, endDateTime])
+
+  // Get current date and time in local ISO format for default min values
+  const getCurrentDateTime = () => {
+    const now = new Date()
+    return now.toISOString().slice(0, 16)
+  }
+
+  // Handle start time change and ensure end time is after start time
+  const handleStartChange = (e) => {
+    const newStart = e.target.value
+    onStartChange(newStart)
+
+    // If end time is before new start time, update end time
+    if (endDateTime && new Date(endDateTime) <= new Date(newStart)) {
+      // Set end time to start time + 1 hour
+      const newEndDate = new Date(new Date(newStart).getTime() + 60 * 60 * 1000)
+      onEndChange(newEndDate.toISOString().slice(0, 16))
+    }
+  }
 
   const formatDisplayDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return ""
@@ -70,7 +81,7 @@ export default function DateTimeRangePicker({
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Start DateTime */}
+          {/* From DateTime */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
               <Clock className="w-4 h-4 mr-2 text-green-600" />
@@ -79,18 +90,17 @@ export default function DateTimeRangePicker({
             <input
               type="datetime-local"
               value={startDateTime}
-              readOnly
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-base"
+              onChange={handleStartChange}
+              min={minDate || getCurrentDateTime()}
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-base"
               required
             />
             {startDateTime && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                📅 {formatDisplayDateTime(startDateTime)}
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">📅 {formatDisplayDateTime(startDateTime)}</p>
             )}
           </div>
 
-          {/* End DateTime */}
+          {/* To DateTime */}
           <div className="space-y-2">
             <label className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
               <Clock className="w-4 h-4 mr-2 text-red-600" />
@@ -100,20 +110,18 @@ export default function DateTimeRangePicker({
               type="datetime-local"
               value={endDateTime}
               onChange={(e) => onEndChange(e.target.value)}
-              min={startDateTime}
+              min={startDateTime || getCurrentDateTime()}
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-base"
               required
             />
             {endDateTime && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                📅 {formatDisplayDateTime(endDateTime)}
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">📅 {formatDisplayDateTime(endDateTime)}</p>
             )}
           </div>
         </div>
       </div>
 
-      {/* Fee Calculation */}
+      {/* Fee Calculator */}
       {calculatedHours > 0 && (
         <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-700">
           <h4 className="flex items-center font-semibold text-gray-900 dark:text-gray-100 mb-4">
