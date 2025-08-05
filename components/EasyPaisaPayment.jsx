@@ -10,7 +10,18 @@ export default function EasyPaisaPayment({ amount, onPaymentComplete, onCancel, 
   const DISCOUNT_PER_HOUR = 10
 
   // Final amount calculation
-  const finalAmount = isAdmin ? amount : amount - DISCOUNT_PER_HOUR * Math.ceil(amount / 100)
+  // const finalAmount = isAdmin ? amount : amount - DISCOUNT_PER_HOUR * Math.ceil(amount / 100)
+
+const safeAmount = Number(amount) || 0;
+const finalAmount = isAdmin
+  ? safeAmount
+  : safeAmount - DISCOUNT_PER_HOUR * Math.ceil(safeAmount / 100);
+
+
+
+
+
+  
 
   const copyToClipboard = async () => {
     try {
