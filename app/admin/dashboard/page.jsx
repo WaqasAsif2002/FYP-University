@@ -5,7 +5,7 @@ import { supabase } from "@/lib/createClient";
 
 import { useUser } from "@/context/context";
 import { useRouter } from "next/navigation";
-import {
+import { 
   SidebarProvider,
   Sidebar,
   SidebarContent,
@@ -1285,6 +1285,7 @@ export default function AdminDashboard() {
               const diffHours = Math.ceil(
                 (endTime - startTime) / (1000 * 60 * 60)
               );
+              var data = diffHours * 100;
               return diffHours * 100; // Admin pays full price
             })()}
             onPaymentComplete={handleAdminEasyPaisaComplete}
