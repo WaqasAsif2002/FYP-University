@@ -1182,19 +1182,19 @@ export default function UserDashboard() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-0 gap-2">
                   <button
                     onClick={downloadReceipt}
                     className="bg-black dark:bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-800 dark:hover:bg-gray-600 text-sm"
                   >
                     Download PDF
                   </button>
-                  <button
+{/*                   <button
                     onClick={sendWhatsAppConfirmation}
                     className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 text-sm"
                   >
                     Send WhatsApp
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
