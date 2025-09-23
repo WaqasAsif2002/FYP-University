@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import ParkEaseChatbot from "@/components/ParkEaseChatbot";
 import SweetAlertProvider from "@/components/SweetAlert";
+import { motion } from "framer-motion";
 // import emailjs from "emailjs-com";
 import { useRef } from "react";
 import { Car, Shield, Smartphone, Phone, Mail, MapPinIcon } from "lucide-react";
@@ -108,34 +109,32 @@ export default function Home() {
               </button>
             </div>
             <div className="flex justify-center">
-              <img
-                src="https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png"
-                alt="Modern parking"
-                className="rounded-lg shadow-2xl max-w-md w-full"
-              />
-            </div>
+               <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9 }} className="flex justify-center">
+            <img src="https://cdn.prod.website-files.com/621f6615a4c8a1d5166a4362/6261605ebd220a5d73b95f88_smart%20parking.png" alt="Modern parking" className="rounded-2xl shadow-2xl max-w-lg w-full hover:scale-105 transition-transform duration-500" />
+          </motion.div>
+        </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-white mb-16">Features</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="text-center p-8 rounded-xl bg-gray-700 hover:bg-gray-600 transition shadow-lg"
-              >
-                <div className="flex justify-center mb-6">{feature.icon}</div>
-                <h3 className="text-2xl font-semibold text-white mb-4">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
-              </div>
+
+    {/* Features */}
+      <section id="features" className="py-20 bg-gray-950">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center mb-16">Features</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {features.map((f, i) => (
+              <motion.div key={i} whileHover={{ scale: 1.05 }} className="text-center p-10 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-700 shadow-xl hover:shadow-2xl transition">
+                <div className="flex justify-center mb-6">{f.icon}</div>
+                <h3 className="text-2xl font-semibold mb-3">{f.title}</h3>
+                <p className="text-gray-300">{f.description}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
+
+
 
       {/* About Section */}
       <section id="about" className="py-12 md:py-20 bg-gray-900">
@@ -165,9 +164,26 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Steps */}
+      <section id="how-it-works" className="py-20 bg-gray-950">
+        <div className="container mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center mb-16">How It Works</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {steps.map((s, i) => (
+              <motion.div key={i} whileHover={{ scale: 1.05 }} className="text-center bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition">
+                <img src={s.image} alt={`Step ${s.number}`} className="w-full h-56 object-cover rounded-lg mb-4" />
+                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 shadow-lg">{s.number}</div>
+                <h3 className="text-xl font-semibold mb-2">{s.title}</h3>
+                <p className="text-gray-300">{s.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* How it Works Section */}
-      <section id="how-it-works" className="py-20 bg-gray-900">
+      {/* <section id="how-it-works" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-white mb-16">How It Works</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -187,10 +203,10 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 bg-gray-800">
+      <section id="testimonials" className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-white mb-16">What Our Users Say</h2>
           <TestimonialSlider />
@@ -198,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-900">
+      <section id="contact" className="py-20 bg-gray-950">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center text-white mb-16">Contact Us</h2>
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
